@@ -1,28 +1,28 @@
 const express = require("express");
 const app = express();
 
-// Allows API to read JSON
 app.use(express.json());
 
-// Test API
+let users = []; // in-memory storage
+
 app.get("/", (req, res) => {
   res.send("API is working 🚀");
 });
 
-// GET users
 app.get("/users", (req, res) => {
-  res.json([
-    { id: 1, name: "Divyak" }
-  ]);
+  res.json(users);
 });
 
-// POST user
 app.post("/users", (req, res) => {
-  const user = req.body;
-  res.status(201).json({
-    message: "User created",
-    user
-  });
+  const newUser = {
+    id: users.length + 1,
+    name: req.body.name,
+    role: req.body.role
+  };
+
+  users.push(newUser);
+
+  res.status(201).json(newUser);
 });
 
 app.listen(3000, () => {
